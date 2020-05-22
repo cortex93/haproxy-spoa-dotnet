@@ -126,9 +126,10 @@ namespace HAProxy.StreamProcessingOffload.Agent
         private byte[] GetBytesForBinaryValue()
         {
             var bytes = new List<byte>();
-            VariableInt lengthOfValue = VariableInt.EncodeVariableInt(((string)this.Value).Length);
-            bytes.AddRange(lengthOfValue.Bytes);
-            bytes.AddRange(Convert.FromBase64String((string)this.Value));
+            var binaryBytes = Convert.FromBase64String((string)this.Value);
+            VariableInt lengthOfBinary = VariableInt.EncodeVariableInt(binaryBytes.Length);
+            bytes.AddRange(lengthOfBinary.Bytes);
+            bytes.AddRange(binaryBytes);
             return bytes.ToArray();
         }
 
